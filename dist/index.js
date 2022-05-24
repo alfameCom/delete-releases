@@ -8703,6 +8703,8 @@ async function run() {
 
     const { owner, repo } = github.context.repo;
 
+    await new Promise(r => setTimeout(r, 10000));
+
     const listAllReleases = async function listReleases(pageNumber = 1) {
       const listReleasesResponse = await octokit.rest.repos.listReleases({
         owner,
@@ -8711,13 +8713,13 @@ async function run() {
         page: pageNumber
       });
 
-      core.info(listReleasesResponse);
-
       if (listReleasesResponse.status !== 200) {
         throw new Error('Error listing releases');
       }
 
       const releases = listReleasesResponse.data;
+
+      core.info(releases);
 
       if (releases.length === 100) {
         return releases.concat(await listAllReleases(pageNumber + 1));
