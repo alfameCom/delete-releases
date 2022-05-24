@@ -1,13 +1,17 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Delete releases'
+description: 'Delete releases in repository with optional filters'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  name:
+    description: 'Name of the release to delete'
+    required: false
+  keep:
+    description: 'Number of matching releases to keep'
+    required: false
+    default: '0'
+  types:
+    description: 'Comma-separated list of release types to delete'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+    default: 'draft,prerelease,release'
 runs:
   using: 'node16'
   main: 'dist/index.js'

@@ -1,35 +1,53 @@
 {
-  "name": "javascript-action",
+  "name": "delete-releases",
   "version": "1.0.0",
-  "description": "JavaScript Action Template",
-  "main": "index.js",
+  "description": "Delete releases in repository with optional filters",
+  "main": "src/index.js",
   "scripts": {
-    "lint": "eslint .",
-    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
-    "test": "jest",
-    "all": "npm run lint && npm run prepare && npm run test"
+    "lint": "eslint 'src/**.js' && eslint 'test/**.js' --fix",
+    "prepare": "ncc build src/index.js -o dist --source-map --license licenses.txt",
+    "test": "eslint 'src/**.js' 'test/**.js' && jest --coverage",
+    "all": "npm run lint && npm run prepare && npm run test",
+    "precommit": "npm run prepare && git add dist/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git@github.com:alfameCom/delete-releases.git"
   },
   "keywords": [
     "GitHub",
     "Actions",
-    "JavaScript"
+    "JavaScript",
+    "Release"
   ],
-  "author": "",
+  "author": "tuomasmakinen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/alfameCom/delete-releases/issues"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/alfameCom/delete-releases#readme",
   "dependencies": {
-    "@actions/core": "^1.2.5"
+    "@actions/core": "^1.2.5",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^5.0.3"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.31.1",
     "eslint": "^8.0.0",
     "jest": "^27.2.5"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/delete-releases.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
