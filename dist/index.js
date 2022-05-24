@@ -8991,8 +8991,6 @@ async function run() {
 
     const { owner, repo } = github.context.repo;
 
-    console.log(core.getInput('types'))
-
     const listAllReleases = async function listReleases(pageNumber = 1) {
       const listReleasesResponse = await octokit.rest.repos.listReleases({
         owner,
