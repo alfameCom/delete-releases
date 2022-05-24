@@ -15,6 +15,8 @@ async function run() {
         page: pageNumber
       });
 
+      core.info(listReleasesResponse);
+
       if (listReleasesResponse.status !== 200) {
         throw new Error('Error listing releases');
       }
