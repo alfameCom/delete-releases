@@ -1,68 +1,58 @@
-# Create a JavaScript Action
+# delete-releases
 
-<p align="center">
-  <a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
-</p>
+[![Actions Status](https://github.com/alfameCom/delete-releases/workflows/units-test/badge.svg)](https://github.com/alfameCom/delete-releases/actions)
 
-Use this template to bootstrap the creation of a JavaScript action.:rocket:
+Delete GitHub releases with optional filters
 
-This template includes tests, linting, a validation workflow, publishing, and versioning guidance.
+## Usage
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+```yaml
+name: Delete release
+on:
+  push:
 
-## Create an action from this template
-
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Main
-
-Install the dependencies
-
-```bash
-npm install
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Delete all releases
+      uses: alfameCom/delete-releases@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Run the tests :heavy_check_mark:
+## Inputs
 
-```bash
-$ npm test
+### name
 
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-...
+Name of the release, only delete releases with this name
+
+```yaml
+uses: alfameCom/delete-releases@v1
+with:
+  name: '1.0.0'
 ```
 
-## Change action.yml
+### keep
 
-The action.yml defines the inputs and output for your action.
+Number of matching releases to keep, keeps the most recent releases. The default is 0.
 
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-const core = require('@actions/core');
-...
-
-async function run() {
-  try {
-      ...
-  }
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
+```yaml
+uses: alfameCom/delete-releases@v1
+with:
+  keep: '1'
 ```
 
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
+### types
+
+Comma-separated list of types to delete. Includes all types by default.
+
+```yaml
+uses: alfameCom/delete-releases@v1
+with:
+  types: 'draft'
+```
 
 ## Package for distribution
 
@@ -102,15 +92,3 @@ Note: We recommend using the `--license` option for ncc, which will create a lic
 Your action is now published! :rocket:
 
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Usage
-
-You can now consume the action by referencing the v1 branch
-
-```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
