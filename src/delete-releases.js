@@ -30,7 +30,9 @@ async function run() {
 
     let matchingReleases = await listAllReleases();
 
-    if (core.getInput('types')) {
+    core.info(`Found ${matchingReleases.length} releases`);
+
+    if (core.getInput('types') && core.getInput('types') !== '') {
       let includeDrafts = false;
       let includePrereleases = false;
       let includeReleases = false;
@@ -73,15 +75,17 @@ async function run() {
       });
     }
 
-    if (core.getInput('name')) {
+    if (core.getInput('name') && core.getInput('name') !== '') {
       matchingReleases = matchingReleases.filter((release) => release.name === core.getInput('name'));
     }
 
-    if (core.getInput('keep')) {
+    if (core.getInput('keep') && core.getInput('keep') !== '') {
       matchingReleases = matchingReleases
         .sort((left, right) => new Date(right.created_at) - new Date(left.created_at))
         .slice(core.getInput('keep'));
     }
+
+    core.info(`Deleting ${matchingReleases.length} releases`);
 
     const deleteTasks = [];
 
