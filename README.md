@@ -72,6 +72,12 @@ Since the packaged index.js is run from the dist folder.
 git add dist
 ```
 
+These commands are also wrapped in the npm script 'precommit'
+
+```bash
+npm run precommit
+```
+
 ## Create a release branch
 
 Users shouldn't consume the action from master since that would be latest code and actions can break compatibility between major versions.
