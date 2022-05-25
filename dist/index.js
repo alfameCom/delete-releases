@@ -8703,8 +8703,6 @@ async function run() {
 
     const { owner, repo } = github.context.repo;
 
-    await new Promise(r => setTimeout(r, 10000));
-
     const listAllReleases = async function listReleases(pageNumber = 1) {
       const listReleasesResponse = await octokit.rest.repos.listReleases({
         owner,
@@ -8733,6 +8731,7 @@ async function run() {
     core.info(`Found ${matchingReleases.length} releases`);
 
     if (core.getInput('types') && core.getInput('types') !== '') {
+      const originalLength = matchingReleases.length;
       let includeDrafts = false;
       let includePrereleases = false;
       let includeReleases = false;
@@ -8773,13 +8772,18 @@ async function run() {
 
         return returnValue;
       });
+
+      core.info(`Filtered out ${originalLength - matchingReleases.length} releases based on type`);
     }
 
     if (core.getInput('name') && core.getInput('name') !== '') {
+      const originalLength = matchingReleases.length;
       matchingReleases = matchingReleases.filter((release) => release.name === core.getInput('name'));
+      core.info(`Filtered out ${originalLength - matchingReleases.length} releases based on name`);
     }
 
     if (core.getInput('keep') && core.getInput('keep') !== '') {
+      core.info(`Keeping ${core.getInput('keep')} releases`);
       matchingReleases = matchingReleases
         .sort((left, right) => new Date(right.created_at) - new Date(left.created_at))
         .slice(core.getInput('keep'));
